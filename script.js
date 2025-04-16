@@ -1,10 +1,17 @@
-document.addEventListener('DOMContentLoaded', () => {
-    const grid = document.getElementById('grid');
+document.addEventListener("DOMContentLoaded", () => {
+    const grid = document.getElementById("grid");
+    const gridSize = 16; // 16x16 grid
 
-    // Create the grid cells
-    for (let i = 0; i < 64; i++) {
-        const cell = document.createElement('div');
-        cell.classList.add('cell');
+    // Create 16x16 grid (256 cells)
+    for (let i = 0; i < gridSize * gridSize; i++) {
+        const cell = document.createElement("div");
+        cell.classList.add("cell");
+
+        // Add hover effect
+        cell.addEventListener("mouseover", () => {
+            cell.classList.add("hovered");
+        });
+
         grid.appendChild(cell);
     }
 
@@ -39,23 +46,23 @@ document.addEventListener('DOMContentLoaded', () => {
 
     function moveUp(cell) {
         const index = Array.from(grid.children).indexOf(cell);
-        if (index >= 8) {
-            return grid.children[index - 8];
+        if (index >= gridSize) {
+            return grid.children[index - gridSize];
         }
         return cell;
     }
 
     function moveDown(cell) {
         const index = Array.from(grid.children).indexOf(cell);
-        if (index < 56) {
-            return grid.children[index + 8];
+        if (index < gridSize * (gridSize - 1)) {
+            return grid.children[index + gridSize];
         }
         return cell;
     }
 
     function moveLeft(cell) {
         const index = Array.from(grid.children).indexOf(cell);
-        if (index % 8 !== 0) {
+        if (index % gridSize !== 0) {
             return grid.children[index - 1];
         }
         return cell;
@@ -63,7 +70,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     function moveRight(cell) {
         const index = Array.from(grid.children).indexOf(cell);
-        if (index % 8 !== 7) {
+        if (index % gridSize !== gridSize - 1) {
             return grid.children[index + 1];
         }
         return cell;
