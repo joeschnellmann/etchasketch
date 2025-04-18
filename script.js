@@ -1,24 +1,40 @@
 document.addEventListener("DOMContentLoaded", () => {
     const grid = document.getElementById("grid");
     const gridSize = 16; // 16x16 grid
+    const totalCells = gridSize * gridSize;
+    let filledCells = 0; // Counter to track filled cells
 
     // Create 16x16 grid (256 cells)
-    for (let i = 0; i < gridSize * gridSize; i++) {
+    for (let i = 0; i < totalCells; i++) {
         const cell = document.createElement("div");
         cell.classList.add("cell");
 
         // Add hover effect
         cell.addEventListener("mouseover", () => {
-            const randomGreen = `rgb(0, ${Math.floor(Math.random() * 256)}, 0)`; // Random green color
-            cell.style.backgroundColor = randomGreen;
+            if (!cell.classList.contains("hovered")) {
+                cell.classList.add("hovered");
+                cell.style.backgroundColor = "blue"; // Leave blue after hover
+                filledCells++;
 
-            // Leave blue after hover
-            setTimeout(() => {
-                cell.style.backgroundColor = "blue";
-            }, 300); // Adjust delay as needed
+                // Check if all cells are filled
+                if (filledCells === totalCells) {
+                    startBlinking();
+                }
+            }
         });
 
         grid.appendChild(cell);
+    }
+
+    // Function to make all cells blink with random green colors
+    function startBlinking() {
+        setInterval(() => {
+            const cells = document.querySelectorAll(".cell");
+            cells.forEach((cell) => {
+                const randomGreen = `rgb(0, ${Math.floor(Math.random() * 256)}, 0)`;
+                cell.style.backgroundColor = randomGreen;
+            });
+        }, 500); // Adjust blinking interval as needed
     }
 
     let currentCell = grid.children[0];
