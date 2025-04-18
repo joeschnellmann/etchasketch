@@ -1,100 +1,48 @@
 document.addEventListener("DOMContentLoaded", () => {
     const grid = document.getElementById("grid");
-    const gridSize = 16; // 16x16 grid
-    const totalCells = gridSize * gridSize;
-    let filledCells = 0; // Counter to track filled cells
+    const gridSizeButton = document.getElementById("gridSizeButton");
 
-    // Create 16x16 grid (256 cells)
-    for (let i = 0; i < totalCells; i++) {
-        const cell = document.createElement("div");
-        cell.classList.add("cell");
+    // Function to create the grid
+    function createGrid(gridSize) {
+        grid.innerHTML = ""; // Clear existing grid
+        const totalCells = gridSize * gridSize;
 
-        // Add hover effect
-        cell.addEventListener("mouseover", () => {
-            if (!cell.classList.contains("hovered")) {
-                cell.classList.add("hovered");
-                cell.style.backgroundColor = "blue"; // Leave blue after hover
-                filledCells++;
+        for (let i = 0; i < totalCells; i++) {
+            const cell = document.createElement("div");
+            cell.classList.add("cell");
 
-                // Check if all cells are filled
-                if (filledCells === totalCells) {
-                    startBlinking();
-                }
-            }
-        });
-
-        grid.appendChild(cell);
-    }
-
-    // Function to make all cells blink with random green colors
-    function startBlinking() {
-        setInterval(() => {
-            const cells = document.querySelectorAll(".cell");
-            cells.forEach((cell) => {
+            // Add hover effect
+            cell.addEventListener("mouseover", () => {
                 const randomGreen = `rgb(0, ${Math.floor(Math.random() * 256)}, 0)`;
                 cell.style.backgroundColor = randomGreen;
+
+                // Leave blue after hover
+                setTimeout(() => {
+                    cell.style.backgroundColor = "blue";
+                }, 300);
             });
-        }, 500); // Adjust blinking interval as needed
+
+            grid.appendChild(cell);
+        }
+
+        // Update grid styles dynamically
+        grid.style.gridTemplateColumns = `repeat(${gridSize}, 1fr)`;
+        grid.style.gridTemplateRows = `repeat(${gridSize}, 1fr)`;
     }
 
-    let currentCell = grid.children[0];
-    currentCell.classList.add('active');
+    // Event listener for grid size button
+    gridSizeButton.addEventListener("click", () => {
+        let gridSize = parseInt(prompt("Enter grid size (must be a multiple of 16):"), 10);
 
-    document.addEventListener('keydown', (event) => {
-        const key = event.key;
-        let newCell;
-
-        switch (key) {
-            case 'ArrowUp':
-                newCell = moveUp(currentCell);
-                break;
-            case 'ArrowDown':
-                newCell = moveDown(currentCell);
-                break;
-            case 'ArrowLeft':
-                newCell = moveLeft(currentCell);
-                break;
-            case 'ArrowRight':
-                newCell = moveRight(currentCell);
-                break;
+        // Validate input
+        if (isNaN(gridSize) || gridSize % 16 !== 0 || gridSize <= 0) {
+            alert("Invalid input! Please enter a positive multiple of 16.");
+            return;
         }
 
-        if (newCell) {
-            currentCell.classList.remove('active');
-            currentCell = newCell;
-            currentCell.classList.add('active');
-        }
+        createGrid(gridSize);
     });
 
-    function moveUp(cell) {
-        const index = Array.from(grid.children).indexOf(cell);
-        if (index >= gridSize) {
-            return grid.children[index - gridSize];
-        }
-        return cell;
-    }
-
-    function moveDown(cell) {
-        const index = Array.from(grid.children).indexOf(cell);
-        if (index < gridSize * (gridSize - 1)) {
-            return grid.children[index + gridSize];
-        }
-        return cell;
-    }
-
-    function moveLeft(cell) {
-        const index = Array.from(grid.children).indexOf(cell);
-        if (index % gridSize !== 0) {
-            return grid.children[index - 1];
-        }
-        return cell;
-    }
-
-    function moveRight(cell) {
-        const index = Array.from(grid.children).indexOf(cell);
-        if (index % gridSize !== gridSize - 1) {
-            return grid.children[index + 1];
-        }
-        return cell;
-    }
+    // Create default 16x16 grid on page load
+    createGrid(16);
 });

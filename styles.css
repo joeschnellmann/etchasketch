@@ -3,13 +3,20 @@ body {
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: center;
+    justify-content: flex-start;
     height: 100vh;
     background-color: #f0f0f0;
 }
 
 h1 {
+    margin: 20px 0;
+}
+
+button {
     margin-bottom: 20px;
+    padding: 10px 20px;
+    font-size: 16px;
+    cursor: pointer;
 }
 
 .container {
@@ -21,16 +28,14 @@ h1 {
 }
 
 #grid {
-    display: flex;
-    flex-wrap: wrap;
+    display: grid;
     width: 80vmin; /* Scales with viewport size */
     height: 80vmin; /* Keeps the grid square */
-    gap: 0;
+    gap: 1px;
+    background-color: white;
 }
 
 .cell {
-    flex: 0 0 calc(100% / 16); /* Divide the grid into 16 columns */
-    height: calc(100% / 16); /* Divide the grid into 16 rows */
     background-color: white;
     border: 1px solid #ccc;
     transition: background-color 0.3s ease;
