@@ -9,7 +9,13 @@ document.addEventListener("DOMContentLoaded", () => {
 
         // Add hover effect
         cell.addEventListener("mouseover", () => {
-            cell.classList.add("hovered");
+            const randomGreen = `rgb(0, ${Math.floor(Math.random() * 256)}, 0)`; // Random green color
+            cell.style.backgroundColor = randomGreen;
+
+            // Leave blue after hover
+            setTimeout(() => {
+                cell.style.backgroundColor = "blue";
+            }, 300); // Adjust delay as needed
         });
 
         grid.appendChild(cell);
